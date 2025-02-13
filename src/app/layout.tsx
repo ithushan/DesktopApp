@@ -14,7 +14,9 @@ export default function RootLayout({
         border: "1px solid green",
         width: "100%",
         height: "100vh",
-        overflow: "hidden"
+        overflow: "hidden",
+        margin:0,
+        padding:0
       }}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
