@@ -1,77 +1,78 @@
 "use client";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import { Container, Typography, TextField } from "@mui/material";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import SendIcon from "@mui/icons-material/Send";
-import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+// import data from "../../data/db.json";
+import { useEffect, useState } from "react";
+import { Note } from "@/types/main";
+import Grid from "@mui/material/Grid";
+import { Paper, Container } from "@mui/material";
+import NoteCard from "./components/NoteCard";
+import Masonry from "react-masonry-css";
 
 export default function Home() {
-  const [title, setTitle] = useState<string>("");
-  const [details, setDetails] = useState<string>("");
-  const [titleError, setTitleError] = useState(false);
-  const [detailsError, setDetailsError] = useState<boolean>(false);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setTitleError(false);
-    setDetailsError(false);
-
-    if (title === "") {
-      setTitleError(true);
-    }
-    if (details === "") {
-      setDetailsError(true);
-    }
-    if (title && details) {
-      alert("Title:" + title + "  details: " + details);
+  const fetchNotes = async () => {
+    try {
+      const res = await fetch("/api/notes");
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data: Note[] = await res.json();
+      setNotes(data);
+    } catch (err) {
+      setError("Failed to fetch notes");
+      console.error(err);
     }
   };
 
-  return (
-    <Container>
-      <Typography variant="h6" component={"h2"} color="gary">
-        Create New Note
-      </Typography>
+  const handleDelete = async (id: number) => {
+    const deleteJson = { id: id };
+    fetch("/api/notes", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(deleteJson),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <TextField
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-          error={titleError}
-          onFocus={() => setTitleError(false)}
-          sx={{ marginTop: 3, marginBottom: 3, display: "block" }}
-          label="Note Title"
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          required
-        />
-        <TextField
-          sx={{ marginTop: 3, marginBottom: 3, display: "block" }}
-          onChange={(e) => setDetails(e.target.value)}
-          value={details}
-          error={detailsError}
-          onFocus={() => setDetailsError(false)}
-          label="Details"
-          variant="outlined"
-          color="secondary"
-          multiline
-          rows={4}
-          fullWidth
-          required
-        />
-        <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          size="large"
-          startIcon={<SendIcon />}
-          endIcon={<KeyboardArrowRightIcon />}
-        >
-          Submit
-        </Button>
-      </form>
+    const newNotes = notes.filter((note) => note.id !== id);
+    setNotes(newNotes);
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const breakpointColumnsObj = {
+    default: 3,
+    1100: 2,
+    700: 1,
+  };
+
+  return (
+    <Container maxWidth="lg">
+      {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
+        {notes.length > 0 &&
+          notes.map((note: Note) => (
+            <div key={note.id}>
+              <NoteCard note={note} handleDelete={handleDelete} />
+            </div>
+          ))}
+      </Masonry>
     </Container>
   );
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Meeting Notes",
+    "details": "Discuss project milestones and deadlines.",
+    "category": "work",
+    "id": 1
+  },
+  {
+    "title": "Grocery List",
+    "details": "Milk, Bread, Eggs, Butter, Cheese",
+    "category": "todos",
+    "id": 2
+  },
+  {
+    "title": "Birthday Reminder",
+    "details": "Buy a gift for John's birthday.",
+    "category": "reminders",
+    "id": 3
+  },
+  {
+    "title": "Expense Report",
+    "details": "Submit the expense report for the last business trip.",
+    "category": "money",
+    "id": 4
+  },
+  {
+    "title": "Workout Plan",
+    "details": "Monday: Chest, Tuesday: Back, Wednesday: Legs",
+    "category": "todos",
+    "id": 5
+  },
+  {
+    "title": "Book List",
+    "details": "Read 'Atomic Habits' and 'The Lean Startup'.",
+    "category": "reminders",
+    "id": 6
+  },
+  {
+    "title": "Client Meeting",
+    "details": "Prepare presentation for the client meeting on Friday.",
+    "category": "work",
+    "id": 7
+  },
+  {
+    "title": "Vacation Plan",
+    "details": "Plan the itinerary for the summer vacation.",
+    "category": "todos",
+    "id": 8
+  },
+  {
+    "title": "Monthly Budget",
+    "details": "Allocate budget for groceries, rent, and utilities.",
+    "category": "money",
+    "id": 9
+  },
+  {
+    "title": "Dentist Appointment",
+    "details": "Schedule a dentist appointment for next week.",
+    "category": "reminders",
+    "id": 10
+  }
+]
